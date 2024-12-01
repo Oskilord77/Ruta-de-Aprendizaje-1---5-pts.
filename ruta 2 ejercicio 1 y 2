@@ -1,0 +1,1843 @@
+ruta 2
+ejercicio 1
+data:
+DataSource.kt:
+package com.example.cupcake.data
+
+import com.example.cupcake.R
+
+object DataSource {
+    val flavors = listOf(
+        R.string.vanilla,
+        R.string.chocolate,
+        R.string.red_velvet,
+        R.string.salted_caramel,
+        R.string.coffee
+    )
+
+    val quantityOptions = listOf(
+        Pair(R.string.one_cupcake, 1),
+        Pair(R.string.six_cupcakes, 6),
+        Pair(R.string.twelve_cupcakes, 12)
+    )
+}
+
+OrderUIState.kt
+package com.example.cupcake.data
+
+/**
+ * Data class that represents the current UI state in terms of [quantity], [flavor],
+ * [dateOptions], selected pickup [date] and [price]
+ */
+data class OrderUiState(
+    /** Selected cupcake quantity (1, 6, 12) */
+    val quantity: Int = 0,
+    /** Flavor of the cupcakes in the order (such as "Chocolate", "Vanilla", etc..) */
+    val flavor: String = "",
+    /** Selected date for pickup (such as "Jan 1") */
+    val date: String = "",
+    /** Total price for the order */
+    val price: String = "",
+    /** Available pickup dates for the order*/
+    val pickupOptions: List<String> = listOf()
+)
+
+
+Components:
+CommonUi.kt:
+
+package com.example.cupcake.ui.components
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.cupcake.R
+
+/**
+ * Composable that displays formatted [price] that will be formatted and displayed on screen
+ */
+@Composable
+fun FormattedPriceLabel(subtotal: String, modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.subtotal_price, subtotal),
+        modifier = modifier,
+        style = MaterialTheme.typography.headlineSmall
+    )
+}
+
+
+theme:
+color.kt:
+package com.example.cupcake.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+val md_theme_light_primary = Color(0xFF984062)
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFFFD9E2)
+val md_theme_light_onPrimaryContainer = Color(0xFF3E001E)
+val md_theme_light_secondary = Color(0xFF74565F)
+val md_theme_light_onSecondary = Color(0xFFFFFFFF)
+val md_theme_light_secondaryContainer = Color(0xFFFFD9E2)
+val md_theme_light_onSecondaryContainer = Color(0xFF2B151C)
+val md_theme_light_tertiary = Color(0xFF7C5635)
+val md_theme_light_onTertiary = Color(0xFFFFFFFF)
+val md_theme_light_tertiaryContainer = Color(0xFFFFDCC2)
+val md_theme_light_onTertiaryContainer = Color(0xFF2E1500)
+val md_theme_light_error = Color(0xFFBA1A1A)
+val md_theme_light_errorContainer = Color(0xFFFFDAD6)
+val md_theme_light_onError = Color(0xFFFFFFFF)
+val md_theme_light_onErrorContainer = Color(0xFF410002)
+val md_theme_light_background = Color(0xFFFFFBFF)
+val md_theme_light_onBackground = Color(0xFF201A1B)
+val md_theme_light_surface = Color(0xFFFFFBFF)
+val md_theme_light_onSurface = Color(0xFF201A1B)
+val md_theme_light_surfaceVariant = Color(0xFFF2DDE2)
+val md_theme_light_onSurfaceVariant = Color(0xFF514347)
+val md_theme_light_outline = Color(0xFF837377)
+val md_theme_light_inverseOnSurface = Color(0xFFFAEEEF)
+val md_theme_light_inverseSurface = Color(0xFF352F30)
+val md_theme_light_inversePrimary = Color(0xFFFFB0C9)
+val md_theme_light_surfaceTint = Color(0xFF984062)
+val md_theme_light_outlineVariant = Color(0xFFD5C2C6)
+val md_theme_light_scrim = Color(0xFF000000)
+
+val md_theme_dark_primary = Color(0xFFFFB0C9)
+val md_theme_dark_onPrimary = Color(0xFF5E1133)
+val md_theme_dark_primaryContainer = Color(0xFF7B294A)
+val md_theme_dark_onPrimaryContainer = Color(0xFFFFD9E2)
+val md_theme_dark_secondary = Color(0xFFE2BDC7)
+val md_theme_dark_onSecondary = Color(0xFF422931)
+val md_theme_dark_secondaryContainer = Color(0xFF5A3F47)
+val md_theme_dark_onSecondaryContainer = Color(0xFFFFD9E2)
+val md_theme_dark_tertiary = Color(0xFFEFBD94)
+val md_theme_dark_onTertiary = Color(0xFF48290C)
+val md_theme_dark_tertiaryContainer = Color(0xFF623F20)
+val md_theme_dark_onTertiaryContainer = Color(0xFFFFDCC2)
+val md_theme_dark_error = Color(0xFFFFB4AB)
+val md_theme_dark_errorContainer = Color(0xFF93000A)
+val md_theme_dark_onError = Color(0xFF690005)
+val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)
+val md_theme_dark_background = Color(0xFF201A1B)
+val md_theme_dark_onBackground = Color(0xFFEBE0E1)
+val md_theme_dark_surface = Color(0xFF201A1B)
+val md_theme_dark_onSurface = Color(0xFFEBE0E1)
+val md_theme_dark_surfaceVariant = Color(0xFF514347)
+val md_theme_dark_onSurfaceVariant = Color(0xFFD5C2C6)
+val md_theme_dark_outline = Color(0xFF9E8C90)
+val md_theme_dark_inverseOnSurface = Color(0xFF201A1B)
+val md_theme_dark_inverseSurface = Color(0xFFEBE0E1)
+val md_theme_dark_inversePrimary = Color(0xFF984062)
+val md_theme_dark_surfaceTint = Color(0xFFFFB0C9)
+val md_theme_dark_outlineVariant = Color(0xFF514347)
+val md_theme_dark_scrim = Color(0xFF000000)
+
+theme.kt:
+package com.example.cupcake.ui.theme
+
+import android.app.Activity
+import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+
+private val LightColors = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    onPrimaryContainer = md_theme_light_onPrimaryContainer,
+    secondary = md_theme_light_secondary,
+    onSecondary = md_theme_light_onSecondary,
+    secondaryContainer = md_theme_light_secondaryContainer,
+    onSecondaryContainer = md_theme_light_onSecondaryContainer,
+    tertiary = md_theme_light_tertiary,
+    onTertiary = md_theme_light_onTertiary,
+    tertiaryContainer = md_theme_light_tertiaryContainer,
+    onTertiaryContainer = md_theme_light_onTertiaryContainer,
+    error = md_theme_light_error,
+    errorContainer = md_theme_light_errorContainer,
+    onError = md_theme_light_onError,
+    onErrorContainer = md_theme_light_onErrorContainer,
+    background = md_theme_light_background,
+    onBackground = md_theme_light_onBackground,
+    surface = md_theme_light_surface,
+    onSurface = md_theme_light_onSurface,
+    surfaceVariant = md_theme_light_surfaceVariant,
+    onSurfaceVariant = md_theme_light_onSurfaceVariant,
+    outline = md_theme_light_outline,
+    inverseOnSurface = md_theme_light_inverseOnSurface,
+    inverseSurface = md_theme_light_inverseSurface,
+    inversePrimary = md_theme_light_inversePrimary,
+    surfaceTint = md_theme_light_surfaceTint,
+    outlineVariant = md_theme_light_outlineVariant,
+    scrim = md_theme_light_scrim,
+)
+
+private val DarkColors = darkColorScheme(
+    primary = md_theme_dark_primary,
+    onPrimary = md_theme_dark_onPrimary,
+    primaryContainer = md_theme_dark_primaryContainer,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
+    secondary = md_theme_dark_secondary,
+    onSecondary = md_theme_dark_onSecondary,
+    secondaryContainer = md_theme_dark_secondaryContainer,
+    onSecondaryContainer = md_theme_dark_onSecondaryContainer,
+    tertiary = md_theme_dark_tertiary,
+    onTertiary = md_theme_dark_onTertiary,
+    tertiaryContainer = md_theme_dark_tertiaryContainer,
+    onTertiaryContainer = md_theme_dark_onTertiaryContainer,
+    error = md_theme_dark_error,
+    errorContainer = md_theme_dark_errorContainer,
+    onError = md_theme_dark_onError,
+    onErrorContainer = md_theme_dark_onErrorContainer,
+    background = md_theme_dark_background,
+    onBackground = md_theme_dark_onBackground,
+    surface = md_theme_dark_surface,
+    onSurface = md_theme_dark_onSurface,
+    surfaceVariant = md_theme_dark_surfaceVariant,
+    onSurfaceVariant = md_theme_dark_onSurfaceVariant,
+    outline = md_theme_dark_outline,
+    inverseOnSurface = md_theme_dark_inverseOnSurface,
+    inverseSurface = md_theme_dark_inverseSurface,
+    inversePrimary = md_theme_dark_inversePrimary,
+    surfaceTint = md_theme_dark_surfaceTint,
+    outlineVariant = md_theme_dark_outlineVariant,
+    scrim = md_theme_dark_scrim,
+)
+
+@Composable
+fun CupcakeTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+ but turned off for training purposes
+    dynamicColor: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+
+        darkTheme -> DarkColors
+        else -> LightColors
+    }
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
+}
+type.kt:
+package com.example.cupcake.ui.theme
+
+import androidx.compose.material3.Typography
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+
+// Set of Material typography styles to start with
+val Typography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    )
+)
+
+
+OrderViewModel.kt
+package com.example.cupcake.ui
+
+import androidx.lifecycle.ViewModel
+import com.example.cupcake.data.OrderUiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+
+/** Price for a single cupcake */
+private const val PRICE_PER_CUPCAKE = 2.00
+
+/** Additional cost for same day pickup of an order */
+private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
+
+/**
+ * [OrderViewModel] holds information about a cupcake order in terms of quantity, flavor, and
+ * pickup date. It also knows how to calculate the total price based on these order details.
+ */
+class OrderViewModel : ViewModel() {
+
+    /**
+     * Cupcake state for this order
+     */
+    private val _uiState = MutableStateFlow(OrderUiState(pickupOptions = pickupOptions()))
+    val uiState: StateFlow<OrderUiState> = _uiState.asStateFlow()
+
+    /**
+     * Set the quantity [numberCupcakes] of cupcakes for this order's state and update the price
+     */
+    fun setQuantity(numberCupcakes: Int) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                quantity = numberCupcakes,
+                price = calculatePrice(quantity = numberCupcakes)
+            )
+        }
+    }
+
+    /**
+     * Set the [desiredFlavor] of cupcakes for this order's state.
+     * Only 1 flavor can be selected for the whole order.
+     */
+    fun setFlavor(desiredFlavor: String) {
+        _uiState.update { currentState ->
+            currentState.copy(flavor = desiredFlavor)
+        }
+    }
+
+    /**
+     * Set the [pickupDate] for this order's state and update the price
+     */
+    fun setDate(pickupDate: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                date = pickupDate,
+                price = calculatePrice(pickupDate = pickupDate)
+            )
+        }
+    }
+
+    /**
+     * Reset the order state
+     */
+    fun resetOrder() {
+        _uiState.value = OrderUiState(pickupOptions = pickupOptions())
+    }
+
+    /**
+     * Returns the calculated price based on the order details.
+     */
+    private fun calculatePrice(
+        quantity: Int = _uiState.value.quantity,
+        pickupDate: String = _uiState.value.date
+    ): String {
+        var calculatedPrice = quantity * PRICE_PER_CUPCAKE
+        // If the user selected the first option (today) for pickup, add the surcharge
+        if (pickupOptions()[0] == pickupDate) {
+            calculatedPrice += PRICE_FOR_SAME_DAY_PICKUP
+        }
+        val formattedPrice = NumberFormat.getCurrencyInstance().format(calculatedPrice)
+        return formattedPrice
+    }
+
+    /**
+     * Returns a list of date options starting with the current date and the following 3 dates.
+     */
+    private fun pickupOptions(): List<String> {
+        val dateOptions = mutableListOf<String>()
+        val formatter = SimpleDateFormat("E MMM d", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        // add current date and the following 3 dates.
+        repeat(4) {
+            dateOptions.add(formatter.format(calendar.time))
+            calendar.add(Calendar.DATE, 1)
+        }
+        return dateOptions
+    }
+}
+
+
+
+SelectOptionScreem:
+package com.example.cupcake.ui
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.cupcake.R
+import com.example.cupcake.ui.components.FormattedPriceLabel
+import com.example.cupcake.ui.theme.CupcakeTheme
+
+/**
+ * Composable that displays the list of items as [RadioButton] options,
+ * [onSelectionChanged] lambda that notifies the parent composable when a new value is selected,
+ * [onCancelButtonClicked] lambda that cancels the order when user clicks cancel and
+ * [onNextButtonClicked] lambda that triggers the navigation to next screen
+ */
+@Composable
+fun SelectOptionScreen(
+    subtotal: String,
+    options: List<String>,
+    onSelectionChanged: (String) -> Unit = {},
+    onCancelButtonClicked: () -> Unit = {},
+    onNextButtonClicked: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    var selectedValue by rememberSaveable { mutableStateOf("") }
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
+            options.forEach { item ->
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectionChanged(item)
+                        }
+                    ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectionChanged(item)
+                        }
+                    )
+                    Text(item)
+                }
+            }
+            Divider(
+                thickness = dimensionResource(R.dimen.thickness_divider),
+                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
+            )
+            FormattedPriceLabel(
+                subtotal = subtotal,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(
+                        top = dimensionResource(R.dimen.padding_medium),
+                        bottom = dimensionResource(R.dimen.padding_medium)
+                    )
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            OutlinedButton(
+                modifier = Modifier.weight(1f),
+                onClick = onCancelButtonClicked
+            ) {
+                Text(stringResource(R.string.cancel))
+            }
+            Button(
+                modifier = Modifier.weight(1f),
+                // the button is enabled when the user makes a selection
+                enabled = selectedValue.isNotEmpty(),
+                onClick = onNextButtonClicked
+            ) {
+                Text(stringResource(R.string.next))
+            }
+        }
+    }
+
+}
+
+@Preview
+@Composable
+fun SelectOptionPreview() {
+    CupcakeTheme {
+        SelectOptionScreen(
+            subtotal = "299.99",
+            options = listOf("Option 1", "Option 2", "Option 3", "Option 4"),
+            modifier = Modifier.fillMaxHeight()
+        )
+    }
+}
+
+
+
+
+StartOrderScreen.kt
+package com.example.cupcake.ui
+
+import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.cupcake.R
+import com.example.cupcake.data.DataSource
+import com.example.cupcake.ui.theme.CupcakeTheme
+
+/**
+ * Composable that allows the user to select the desired cupcake quantity and expects
+ * [onNextButtonClicked] lambda that expects the selected quantity and triggers the navigation to
+ * next screen
+ */
+@Composable
+fun StartOrderScreen(
+    quantityOptions: List<Pair<Int, Int>>,
+    onNextButtonClicked: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+        ) {
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
+            Image(
+                painter = painterResource(R.drawable.cupcake),
+                contentDescription = null,
+                modifier = Modifier.width(300.dp)
+            )
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
+            Text(
+                text = stringResource(R.string.order_cupcakes),
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(
+                dimensionResource(id = R.dimen.padding_medium)
+            )
+        ) {
+            quantityOptions.forEach { item ->
+                SelectQuantityButton(
+                    labelResourceId = item.first,
+                    onClick = { onNextButtonClicked(item.second) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Customizable button composable that displays the [labelResourceId]
+ * and triggers [onClick] lambda when this composable is clicked
+ */
+@Composable
+fun SelectQuantityButton(
+    @StringRes labelResourceId: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier.widthIn(min = 250.dp)
+    ) {
+        Text(stringResource(labelResourceId))
+    }
+}
+
+@Preview
+@Composable
+fun StartOrderPreview() {
+    CupcakeTheme {
+        StartOrderScreen(
+            quantityOptions = DataSource.quantityOptions,
+            onNextButtonClicked = {},
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(dimensionResource(R.dimen.padding_medium))
+        )
+    }
+}
+
+SummaryScreen.kt
+
+package com.example.cupcake.ui
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.cupcake.R
+import com.example.cupcake.data.OrderUiState
+import com.example.cupcake.ui.components.FormattedPriceLabel
+import com.example.cupcake.ui.theme.CupcakeTheme
+
+/**
+ * This composable expects [orderUiState] that represents the order state, [onCancelButtonClicked]
+ * lambda that triggers canceling the order and passes the final order to [onSendButtonClicked]
+ * lambda
+ */
+@Composable
+fun OrderSummaryScreen(
+    orderUiState: OrderUiState,
+    onCancelButtonClicked: () -> Unit,
+    onSendButtonClicked: (String, String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val resources = LocalContext.current.resources
+
+    val numberOfCupcakes = resources.getQuantityString(
+        R.plurals.cupcakes,
+        orderUiState.quantity,
+        orderUiState.quantity
+    )
+    //Load and format a string resource with the parameters.
+    val orderSummary = stringResource(
+        R.string.order_details,
+        numberOfCupcakes,
+        orderUiState.flavor,
+        orderUiState.date,
+        orderUiState.quantity
+    )
+    val newOrder = stringResource(R.string.new_cupcake_order)
+    //Create a list of order summary to display
+    val items = listOf(
+        // Summary line 1: display selected quantity
+        Pair(stringResource(R.string.quantity), numberOfCupcakes),
+        // Summary line 2: display selected flavor
+        Pair(stringResource(R.string.flavor), orderUiState.flavor),
+        // Summary line 3: display selected pickup date
+        Pair(stringResource(R.string.pickup_date), orderUiState.date)
+    )
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(
+            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+        ) {
+            items.forEach { item ->
+                Text(item.first.uppercase())
+                Text(text = item.second, fontWeight = FontWeight.Bold)
+                Divider(thickness = dimensionResource(R.dimen.thickness_divider))
+            }
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+            FormattedPriceLabel(
+                subtotal = orderUiState.price,
+                modifier = Modifier.align(Alignment.End)
+            )
+        }
+        Row(
+            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+            ) {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onSendButtonClicked(newOrder, orderSummary) }
+                ) {
+                    Text(stringResource(R.string.send))
+                }
+                OutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = onCancelButtonClicked
+                ) {
+                    Text(stringResource(R.string.cancel))
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun OrderSummaryPreview() {
+    CupcakeTheme {
+        OrderSummaryScreen(
+            orderUiState = OrderUiState(0, "Test", "Test", "$300.00"),
+            onSendButtonClicked = { subject: String, summary: String -> },
+            onCancelButtonClicked = {},
+            modifier = Modifier.fillMaxHeight()
+        )
+    }
+}
+
+
+
+
+cupkatescreem.kt
+package com.example.cupcake
+
+import android.content.Context
+import android.content.Intent
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.cupcake.data.DataSource
+import com.example.cupcake.data.OrderUiState
+import com.example.cupcake.ui.OrderSummaryScreen
+import com.example.cupcake.ui.OrderViewModel
+import com.example.cupcake.ui.SelectOptionScreen
+import com.example.cupcake.ui.StartOrderScreen
+
+/**
+ * enum values that represent the screens in the app
+ */
+enum class CupcakeScreen(@StringRes val title: Int) {
+    Start(title = R.string.app_name),
+    Flavor(title = R.string.choose_flavor),
+    Pickup(title = R.string.choose_pickup_date),
+    Summary(title = R.string.order_summary)
+}
+
+/**
+ * Composable that displays the topBar and displays back button if back navigation is possible.
+ */
+@Composable
+fun CupcakeAppBar(
+    currentScreen: CupcakeScreen,
+    canNavigateBack: Boolean,
+    navigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TopAppBar(
+        title = { Text(stringResource(currentScreen.title)) },
+        colors = TopAppBarDefaults.mediumTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        modifier = modifier,
+        navigationIcon = {
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back_button)
+                    )
+                }
+            }
+        }
+    )
+}
+
+@Composable
+fun CupcakeApp(
+    viewModel: OrderViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
+) {
+    // Get current back stack entry
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    // Get the name of the current screen
+    val currentScreen = CupcakeScreen.valueOf(
+        backStackEntry?.destination?.route ?: CupcakeScreen.Start.name
+    )
+
+    Scaffold(
+        topBar = {
+            CupcakeAppBar(
+                currentScreen = currentScreen,
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = { navController.navigateUp() }
+            )
+        }
+    ) { innerPadding ->
+        val uiState by viewModel.uiState.collectAsState()
+
+        NavHost(
+            navController = navController,
+            startDestination = CupcakeScreen.Start.name,
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(innerPadding)
+        ) {
+            composable(route = CupcakeScreen.Start.name) {
+                StartOrderScreen(
+                    quantityOptions = DataSource.quantityOptions,
+                    onNextButtonClicked = {
+                        viewModel.setQuantity(it)
+                        navController.navigate(CupcakeScreen.Flavor.name)
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(dimensionResource(R.dimen.padding_medium))
+                )
+            }
+            composable(route = CupcakeScreen.Flavor.name) {
+                val context = LocalContext.current
+                SelectOptionScreen(
+                    subtotal = uiState.price,
+                    onNextButtonClicked = { navController.navigate(CupcakeScreen.Pickup.name) },
+                    onCancelButtonClicked = {
+                        cancelOrderAndNavigateToStart(viewModel, navController)
+                    },
+                    options = DataSource.flavors.map { id -> context.resources.getString(id) },
+                    onSelectionChanged = { viewModel.setFlavor(it) },
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
+            composable(route = CupcakeScreen.Pickup.name) {
+                SelectOptionScreen(
+                    subtotal = uiState.price,
+                    onNextButtonClicked = { navController.navigate(CupcakeScreen.Summary.name) },
+                    onCancelButtonClicked = {
+                        cancelOrderAndNavigateToStart(viewModel, navController)
+                    },
+                    options = uiState.pickupOptions,
+                    onSelectionChanged = { viewModel.setDate(it) },
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
+            composable(route = CupcakeScreen.Summary.name) {
+                val context = LocalContext.current
+                OrderSummaryScreen(
+                    orderUiState = uiState,
+                    onCancelButtonClicked = {
+                        cancelOrderAndNavigateToStart(viewModel, navController)
+                    },
+                    onSendButtonClicked = { subject: String, summary: String ->
+                        shareOrder(context, subject = subject, summary = summary)
+                    },
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Resets the [OrderUiState] and pops up to [CupcakeScreen.Start]
+ */
+private fun cancelOrderAndNavigateToStart(
+    viewModel: OrderViewModel,
+    navController: NavHostController
+) {
+    viewModel.resetOrder()
+    navController.popBackStack(CupcakeScreen.Start.name, inclusive = false)
+}
+
+/**
+ * Creates an intent to share order details
+ */
+private fun shareOrder(context: Context, subject: String, summary: String) {
+    // Create an ACTION_SEND implicit intent with order details in the intent extras
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_SUBJECT, subject)
+        putExtra(Intent.EXTRA_TEXT, summary)
+    }
+    context.startActivity(
+        Intent.createChooser(
+            intent,
+            context.getString(R.string.new_cupcake_order)
+        )
+    )
+}
+
+MainActivity.kt
+package com.example.cupcake
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import com.example.cupcake.ui.theme.CupcakeTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        setContent {
+            CupcakeTheme {
+                CupcakeApp()
+            }
+        }
+    }
+}
+
+
+ejercicio 2:
+
+
+DataSource.kt
+package com.example.lunchtray.datasource
+
+import com.example.lunchtray.model.MenuItem.AccompanimentItem
+import com.example.lunchtray.model.MenuItem.EntreeItem
+import com.example.lunchtray.model.MenuItem.SideDishItem
+
+/**
+ * Map of available menu items to be displayed in the menu fragments.
+ */
+object DataSource {
+
+    val entreeMenuItems = listOf(
+        EntreeItem(
+            name = "Cauliflower",
+            description = "Whole cauliflower, brined, roasted, and deep fried",
+            price = 7.00,
+        ),
+        EntreeItem(
+            name = "Three Bean Chili",
+            description = "Black beans, red beans, kidney beans, slow cooked, topped with onion",
+            price = 4.00,
+        ),
+        EntreeItem(
+            name = "Mushroom Pasta",
+            description = "Penne pasta, mushrooms, basil, with plum tomatoes cooked in garlic " +
+                    "and olive oil",
+            price = 5.50,
+        ),
+        EntreeItem(
+            name = "Spicy Black Bean Skillet",
+            description = "Seasonal vegetables, black beans, house spice blend, served with " +
+                    "avocado and quick pickled onions",
+            price = 5.50,
+        )
+    )
+
+    val sideDishMenuItems = listOf(
+        SideDishItem(
+            name = "Summer Salad",
+            description = "Heirloom tomatoes, butter lettuce, peaches, avocado, balsamic dressing",
+            price = 2.50,
+        ),
+        SideDishItem(
+            name = "Butternut Squash Soup",
+            description = "Roasted butternut squash, roasted peppers, chili oil",
+            price = 3.00,
+        ),
+        SideDishItem(
+            name = "Spicy Potatoes",
+            description = "Marble potatoes, roasted, and fried in house spice blend",
+            price = 2.00,
+        ),
+        SideDishItem(
+            name = "Coconut Rice",
+            description = "Rice, coconut milk, lime, and sugar",
+            price = 1.50,
+        )
+    )
+
+    val accompanimentMenuItems = listOf(
+        AccompanimentItem(
+            name = "Lunch Roll",
+            description = "Fresh baked roll made in house",
+            price = 0.50,
+        ),
+        AccompanimentItem(
+            name = "Mixed Berries",
+            description = "Strawberries, blueberries, raspberries, and huckleberries",
+            price = 1.00,
+        ),
+        AccompanimentItem(
+            name = "Pickled Veggies",
+            description = "Pickled cucumbers and carrots, made in house",
+            price = 0.50,
+        )
+    )
+}
+
+MenuItem.kt
+package com.example.lunchtray.model
+
+import java.text.NumberFormat
+
+sealed class MenuItem(
+    open val name: String,
+    open val description: String,
+    open val price: Double
+) {
+    /**
+     * Getter method for price.
+     * Includes formatting.
+     */
+    data class EntreeItem(
+        override val name: String,
+        override val description: String,
+        override val price: Double
+    ) : MenuItem(name, description, price)
+
+    data class SideDishItem(
+        override val name: String,
+        override val description: String,
+        override val price: Double
+    ) : MenuItem(name, description, price)
+
+    data class AccompanimentItem(
+        override val name: String,
+        override val description: String,
+        override val price: Double
+    ) : MenuItem(name, description, price)
+
+    /**
+     * Getter method for price.
+     * Includes formatting.
+     */
+    fun getFormattedPrice(): String = NumberFormat.getCurrencyInstance().format(price)
+}
+
+OrderUiState.kt
+
+package com.example.lunchtray.model
+
+data class OrderUiState(
+    // Entree Selection
+    val entree: MenuItem.EntreeItem? = null,
+    val sideDish: MenuItem.SideDishItem? = null,
+    val accompaniment: MenuItem.AccompanimentItem? = null,
+    val itemTotalPrice: Double = 0.0,
+    val orderTax: Double = 0.0,
+    val orderTotalPrice: Double = 0.0
+)
+
+color.kt
+package com.example.lunchtray.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+val md_theme_light_primary = Color(0xFF6750A4)
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFEADDFF)
+val md_theme_light_onPrimaryContainer = Color(0xFF21005D)
+val md_theme_light_secondary = Color(0xFF625B71)
+val md_theme_light_onSecondary = Color(0xFFFFFFFF)
+val md_theme_light_secondaryContainer = Color(0xFFE8DEF8)
+val md_theme_light_onSecondaryContainer = Color(0xFF1D192B)
+val md_theme_light_tertiary = Color(0xFF7D5260)
+val md_theme_light_onTertiary = Color(0xFFFFFFFF)
+val md_theme_light_tertiaryContainer = Color(0xFFFFD8E4)
+val md_theme_light_onTertiaryContainer = Color(0xFF31111D)
+val md_theme_light_error = Color(0xFFB3261E)
+val md_theme_light_onError = Color(0xFFFFFFFF)
+val md_theme_light_errorContainer = Color(0xFFF9DEDC)
+val md_theme_light_onErrorContainer = Color(0xFF410E0B)
+val md_theme_light_outline = Color(0xFF79747E)
+val md_theme_light_background = Color(0xFFFFFBFE)
+val md_theme_light_onBackground = Color(0xFF1C1B1F)
+val md_theme_light_surface = Color(0xFFFFFBFE)
+val md_theme_light_onSurface = Color(0xFF1C1B1F)
+val md_theme_light_surfaceVariant = Color(0xFFE7E0EC)
+val md_theme_light_onSurfaceVariant = Color(0xFF49454F)
+val md_theme_light_inverseSurface = Color(0xFF313033)
+val md_theme_light_inverseOnSurface = Color(0xFFF4EFF4)
+val md_theme_light_inversePrimary = Color(0xFFD0BCFF)
+val md_theme_light_surfaceTint = Color(0xFF6750A4)
+val md_theme_light_outlineVariant = Color(0xFFCAC4D0)
+val md_theme_light_scrim = Color(0xFF000000)
+
+val md_theme_dark_primary = Color(0xFFD0BCFF)
+val md_theme_dark_onPrimary = Color(0xFF381E72)
+val md_theme_dark_primaryContainer = Color(0xFF4F378B)
+val md_theme_dark_onPrimaryContainer = Color(0xFFEADDFF)
+val md_theme_dark_secondary = Color(0xFFCCC2DC)
+val md_theme_dark_onSecondary = Color(0xFF332D41)
+val md_theme_dark_secondaryContainer = Color(0xFF4A4458)
+val md_theme_dark_onSecondaryContainer = Color(0xFFE8DEF8)
+val md_theme_dark_tertiary = Color(0xFFEFB8C8)
+val md_theme_dark_onTertiary = Color(0xFF492532)
+val md_theme_dark_tertiaryContainer = Color(0xFF633B48)
+val md_theme_dark_onTertiaryContainer = Color(0xFFFFD8E4)
+val md_theme_dark_error = Color(0xFFF2B8B5)
+val md_theme_dark_onError = Color(0xFF601410)
+val md_theme_dark_errorContainer = Color(0xFF8C1D18)
+val md_theme_dark_onErrorContainer = Color(0xFFF9DEDC)
+val md_theme_dark_outline = Color(0xFF938F99)
+val md_theme_dark_background = Color(0xFF1C1B1F)
+val md_theme_dark_onBackground = Color(0xFFE6E1E5)
+val md_theme_dark_surface = Color(0xFF1C1B1F)
+val md_theme_dark_onSurface = Color(0xFFE6E1E5)
+val md_theme_dark_surfaceVariant = Color(0xFF49454F)
+val md_theme_dark_onSurfaceVariant = Color(0xFFCAC4D0)
+val md_theme_dark_inverseSurface = Color(0xFFE6E1E5)
+val md_theme_dark_inverseOnSurface = Color(0xFF313033)
+val md_theme_dark_inversePrimary = Color(0xFF6750A4)
+val md_theme_dark_surfaceTint = Color(0xFFD0BCFF)
+val md_theme_dark_outlineVariant = Color(0xFF49454F)
+val md_theme_dark_scrim = Color(0xFF000000)
+
+
+theme.kt:
+package com.example.lunchtray.ui.theme
+
+import android.app.Activity
+import android.os.Build
+import android.view.View
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+
+private val LightColorScheme = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    onPrimaryContainer = md_theme_light_onPrimaryContainer,
+    secondary = md_theme_light_secondary,
+    onSecondary = md_theme_light_onSecondary,
+    secondaryContainer = md_theme_light_secondaryContainer,
+    onSecondaryContainer = md_theme_light_onSecondaryContainer,
+    tertiary = md_theme_light_tertiary,
+    onTertiary = md_theme_light_onTertiary,
+    tertiaryContainer = md_theme_light_tertiaryContainer,
+    onTertiaryContainer = md_theme_light_onTertiaryContainer,
+    error = md_theme_light_error,
+    onError = md_theme_light_onError,
+    errorContainer = md_theme_light_errorContainer,
+    onErrorContainer = md_theme_light_onErrorContainer,
+    outline = md_theme_light_outline,
+    background = md_theme_light_background,
+    onBackground = md_theme_light_onBackground,
+    surface = md_theme_light_surface,
+    onSurface = md_theme_light_onSurface,
+    surfaceVariant = md_theme_light_surfaceVariant,
+    onSurfaceVariant = md_theme_light_onSurfaceVariant,
+    inverseSurface = md_theme_light_inverseSurface,
+    inverseOnSurface = md_theme_light_inverseOnSurface,
+    inversePrimary = md_theme_light_inversePrimary,
+    surfaceTint = md_theme_light_surfaceTint,
+    outlineVariant = md_theme_light_outlineVariant,
+    scrim = md_theme_light_scrim,
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = md_theme_dark_primary,
+    onPrimary = md_theme_dark_onPrimary,
+    primaryContainer = md_theme_dark_primaryContainer,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
+    secondary = md_theme_dark_secondary,
+    onSecondary = md_theme_dark_onSecondary,
+    secondaryContainer = md_theme_dark_secondaryContainer,
+    onSecondaryContainer = md_theme_dark_onSecondaryContainer,
+    tertiary = md_theme_dark_tertiary,
+    onTertiary = md_theme_dark_onTertiary,
+    tertiaryContainer = md_theme_dark_tertiaryContainer,
+    onTertiaryContainer = md_theme_dark_onTertiaryContainer,
+    error = md_theme_dark_error,
+    onError = md_theme_dark_onError,
+    errorContainer = md_theme_dark_errorContainer,
+    onErrorContainer = md_theme_dark_onErrorContainer,
+    outline = md_theme_dark_outline,
+    background = md_theme_dark_background,
+    onBackground = md_theme_dark_onBackground,
+    surface = md_theme_dark_surface,
+    onSurface = md_theme_dark_onSurface,
+    surfaceVariant = md_theme_dark_surfaceVariant,
+    onSurfaceVariant = md_theme_dark_onSurfaceVariant,
+    inverseSurface = md_theme_dark_inverseSurface,
+    inverseOnSurface = md_theme_dark_inverseOnSurface,
+    inversePrimary = md_theme_dark_inversePrimary,
+    surfaceTint = md_theme_dark_surfaceTint,
+    outlineVariant = md_theme_dark_outlineVariant,
+    scrim = md_theme_dark_scrim,
+)
+
+@Composable
+fun LunchTrayTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+, turned off for training purposes
+    dynamicColor: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            setUpEdgeToEdge(view, darkTheme)
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
+}
+
+/**
+ * Sets up edge-to-edge for the window of this [view]. The system icon colors are set to either
+ * light or dark depending on whether the [darkTheme] is enabled or not.
+ */
+private fun setUpEdgeToEdge(view: View, darkTheme: Boolean) {
+    val window = (view.context as Activity).window
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+    window.statusBarColor = Color.Transparent.toArgb()
+    val navigationBarColor = when {
+        Build.VERSION.SDK_INT >= 29 -> Color.Transparent.toArgb()
+        Build.VERSION.SDK_INT >= 26 -> Color(0xFF, 0xFF, 0xFF, 0x63).toArgb()
+        // Min sdk version for this app is 24, this block is for SDK versions 24 and 25
+        else -> Color(0x00,0x00, 0x00, 0x50).toArgb()
+    }
+    window.navigationBarColor = navigationBarColor
+    val controller = WindowCompat.getInsetsController(window, view)
+    controller.isAppearanceLightStatusBars = !darkTheme
+    controller.isAppearanceLightNavigationBars = !darkTheme
+}
+
+type.kt
+package com.example.lunchtray.ui.theme
+
+import androidx.compose.material3.Typography
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+
+// Set of Material typography styles to start with
+val Typography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    )
+)
+
+AccompanimentMenuScreen.kt
+
+
+package com.example.lunchtray.ui
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lunchtray.R
+import com.example.lunchtray.datasource.DataSource
+import com.example.lunchtray.model.MenuItem
+import com.example.lunchtray.model.MenuItem.AccompanimentItem
+
+@Composable
+fun AccompanimentMenuScreen(
+    options: List<AccompanimentItem>,
+    onCancelButtonClicked: () -> Unit,
+    onNextButtonClicked: () -> Unit,
+    onSelectionChanged: (AccompanimentItem) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    BaseMenuScreen(
+        options = options,
+        onCancelButtonClicked = onCancelButtonClicked,
+        onNextButtonClicked = onNextButtonClicked,
+        onSelectionChanged = onSelectionChanged as (MenuItem) -> Unit,
+        modifier = modifier
+    )
+}
+
+@Preview
+@Composable
+fun AccompanimentMenuPreview(){
+    AccompanimentMenuScreen(
+        options = DataSource.accompanimentMenuItems,
+        onNextButtonClicked = {},
+        onCancelButtonClicked = {},
+        onSelectionChanged = {},
+        modifier = Modifier
+            .padding(dimensionResource(R.dimen.padding_medium))
+            .verticalScroll(rememberScrollState())
+    )
+}
+
+
+BaseMenuScreen.kt
+
+package com.example.lunchtray.ui
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import com.example.lunchtray.R
+import com.example.lunchtray.model.MenuItem
+
+@Composable
+fun BaseMenuScreen(
+    options: List<MenuItem>,
+    modifier: Modifier = Modifier,
+    onCancelButtonClicked: () -> Unit = {},
+    onNextButtonClicked: () -> Unit = {},
+    onSelectionChanged: (MenuItem) -> Unit,
+) {
+
+    var selectedItemName by rememberSaveable { mutableStateOf("") }
+
+    Column(modifier = modifier) {
+        options.forEach { item ->
+            val onClick = {
+                selectedItemName = item.name
+                onSelectionChanged(item)
+            }
+            MenuItemRow(
+                item = item,
+                selectedItemName = selectedItemName,
+                onClick = onClick,
+                modifier = Modifier.selectable(
+                    selected = selectedItemName == item.name,
+                    onClick = onClick
+                )
+                    .padding(
+                        start = dimensionResource(R.dimen.padding_medium),
+                        end = dimensionResource(R.dimen.padding_medium),
+                    )
+            )
+        }
+
+        MenuScreenButtonGroup(
+            selectedItemName = selectedItemName,
+            onCancelButtonClicked = onCancelButtonClicked,
+            onNextButtonClicked = {
+                // Assert not null bc next button is not enabled unless selectedItem is not null.
+                onNextButtonClicked()
+            },
+            modifier = Modifier.fillMaxWidth().padding(dimensionResource(R.dimen.padding_medium))
+        )
+    }
+}
+
+@Composable
+fun MenuItemRow(
+    item: MenuItem,
+    selectedItemName: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(
+            selected = selectedItemName == item.name,
+            onClick = onClick
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+        ) {
+            Text(
+                text = item.name,
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Text(
+                text = item.description,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = item.getFormattedPrice(),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Divider(
+                thickness = dimensionResource(R.dimen.thickness_divider),
+                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
+            )
+        }
+    }
+}
+
+@Composable
+fun MenuScreenButtonGroup(
+    selectedItemName: String,
+    onCancelButtonClicked: () -> Unit,
+    onNextButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+    ){
+        OutlinedButton(modifier = Modifier.weight(1f), onClick = onCancelButtonClicked) {
+            Text(stringResource(R.string.cancel).uppercase())
+        }
+        Button(
+            modifier = Modifier.weight(1f),
+            // the button is enabled when the user makes a selection
+            enabled = selectedItemName.isNotEmpty(),
+            onClick = onNextButtonClicked
+        ) {
+            Text(stringResource(R.string.next).uppercase())
+        }
+    }
+}
+
+
+CheckoutScreen.kt
+package com.example.lunchtray.ui
+
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lunchtray.R
+import com.example.lunchtray.datasource.DataSource
+import com.example.lunchtray.model.MenuItem
+import com.example.lunchtray.model.OrderUiState
+
+@Composable
+fun CheckoutScreen(
+    orderUiState: OrderUiState,
+    onNextButtonClicked: () -> Unit,
+    onCancelButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+    ) {
+        Text(
+            text = stringResource(R.string.order_summary),
+            fontWeight = FontWeight.Bold
+        )
+        ItemSummary(item = orderUiState.entree, modifier = Modifier.fillMaxWidth())
+        ItemSummary(item = orderUiState.sideDish, modifier = Modifier.fillMaxWidth())
+        ItemSummary(item = orderUiState.accompaniment, modifier = Modifier.fillMaxWidth())
+
+        Divider(
+            thickness = dimensionResource(R.dimen.thickness_divider),
+            modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_small))
+        )
+
+        OrderSubCost(
+            resourceId = R.string.subtotal,
+            price = orderUiState.itemTotalPrice.formatPrice(),
+            Modifier.align(Alignment.End)
+        )
+
+        OrderSubCost(
+            resourceId = R.string.tax,
+            price = orderUiState.orderTax.formatPrice(),
+            Modifier.align(Alignment.End)
+        )
+
+        Text(
+            text = stringResource(R.string.total, orderUiState.orderTotalPrice.formatPrice()),
+            modifier = Modifier.align(Alignment.End),
+            fontWeight = FontWeight.Bold
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+        ){
+            OutlinedButton(modifier = Modifier.weight(1f), onClick = onCancelButtonClicked) {
+                Text(stringResource(R.string.cancel).uppercase())
+            }
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = onNextButtonClicked
+            ) {
+                Text(stringResource(R.string.submit).uppercase())
+            }
+        }
+    }
+}
+
+@Composable
+fun ItemSummary(
+    item: MenuItem?,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(item?.name ?: "")
+        Text(item?.getFormattedPrice() ?: "")
+    }
+}
+
+@Composable
+fun OrderSubCost(
+    @StringRes resourceId: Int,
+    price: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = stringResource(resourceId, price),
+        modifier = modifier
+    )
+}
+
+@Preview
+@Composable
+fun CheckoutScreenPreview() {
+    CheckoutScreen(
+        orderUiState = OrderUiState(
+            entree = DataSource.entreeMenuItems[0],
+            sideDish = DataSource.sideDishMenuItems[0],
+            accompaniment = DataSource.accompanimentMenuItems[0],
+            itemTotalPrice = 15.00,
+            orderTax = 1.00,
+            orderTotalPrice = 16.00
+        ),
+        onNextButtonClicked = {},
+        onCancelButtonClicked = {},
+        modifier = Modifier
+            .padding(dimensionResource(R.dimen.padding_medium))
+            .verticalScroll(rememberScrollState())
+    )
+}
+
+EntreeMenuScreen.kt
+package com.example.lunchtray.ui
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lunchtray.R
+import com.example.lunchtray.datasource.DataSource
+import com.example.lunchtray.model.MenuItem
+import com.example.lunchtray.model.MenuItem.EntreeItem
+
+@Composable
+fun EntreeMenuScreen(
+    options: List<EntreeItem>,
+    onCancelButtonClicked: () -> Unit,
+    onNextButtonClicked: () -> Unit,
+    onSelectionChanged: (EntreeItem) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    BaseMenuScreen(
+        options = options,
+        onCancelButtonClicked = onCancelButtonClicked,
+        onNextButtonClicked = onNextButtonClicked,
+        onSelectionChanged = onSelectionChanged as (MenuItem) -> Unit,
+        modifier = modifier
+    )
+}
+
+@Preview
+@Composable
+fun EntreeMenuPreview(){
+    EntreeMenuScreen(
+        options = DataSource.entreeMenuItems,
+        onCancelButtonClicked = {},
+        onNextButtonClicked = {},
+        onSelectionChanged = {},
+        modifier = Modifier
+            .padding(dimensionResource(R.dimen.padding_medium))
+            .verticalScroll(rememberScrollState())
+    )
+}
+
+
+
+OrderViewModel.kt
+
+package com.example.lunchtray.ui
+
+import androidx.lifecycle.ViewModel
+import com.example.lunchtray.model.MenuItem
+import com.example.lunchtray.model.MenuItem.AccompanimentItem
+import com.example.lunchtray.model.MenuItem.EntreeItem
+import com.example.lunchtray.model.MenuItem.SideDishItem
+import com.example.lunchtray.model.OrderUiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import java.text.NumberFormat
+
+class OrderViewModel : ViewModel() {
+
+    private val taxRate = 0.08
+
+    private val _uiState = MutableStateFlow(OrderUiState())
+    val uiState: StateFlow<OrderUiState> = _uiState.asStateFlow()
+
+    fun updateEntree(entree: EntreeItem) {
+        val previousEntree = _uiState.value.entree
+        updateItem(entree, previousEntree)
+    }
+
+    fun updateSideDish(sideDish: SideDishItem) {
+        val previousSideDish = _uiState.value.sideDish
+        updateItem(sideDish, previousSideDish)
+    }
+
+    fun updateAccompaniment(accompaniment: AccompanimentItem) {
+        val previousAccompaniment = _uiState.value.accompaniment
+        updateItem(accompaniment, previousAccompaniment)
+    }
+
+    fun resetOrder() {
+        _uiState.value = OrderUiState()
+    }
+
+    private fun updateItem(newItem: MenuItem, previousItem: MenuItem?) {
+        _uiState.update { currentState ->
+            val previousItemPrice = previousItem?.price ?: 0.0
+            // subtract previous item price in case an item of this category was already added.
+            val itemTotalPrice = currentState.itemTotalPrice - previousItemPrice + newItem.price
+            // recalculate tax
+            val tax = itemTotalPrice * taxRate
+            currentState.copy(
+                itemTotalPrice = itemTotalPrice,
+                orderTax = tax,
+                orderTotalPrice = itemTotalPrice + tax,
+                entree = if (newItem is EntreeItem) newItem else currentState.entree,
+                sideDish = if (newItem is SideDishItem) newItem else currentState.sideDish,
+                accompaniment =
+                    if (newItem is AccompanimentItem) newItem else currentState.accompaniment
+            )
+        }
+    }
+}
+
+fun Double.formatPrice(): String {
+    return NumberFormat.getCurrencyInstance().format(this)
+}
+
+
+SideDishMenuScreen.kt
+
+package com.example.lunchtray.ui
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lunchtray.R
+import com.example.lunchtray.datasource.DataSource
+import com.example.lunchtray.model.MenuItem
+import com.example.lunchtray.model.MenuItem.SideDishItem
+
+@Composable
+fun SideDishMenuScreen(
+    options: List<SideDishItem>,
+    onCancelButtonClicked: () -> Unit,
+    onNextButtonClicked: () -> Unit,
+    onSelectionChanged: (SideDishItem) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    BaseMenuScreen(
+        options = options,
+        onCancelButtonClicked = onCancelButtonClicked,
+        onNextButtonClicked = onNextButtonClicked,
+        onSelectionChanged = onSelectionChanged as (MenuItem) -> Unit,
+        modifier = modifier
+    )
+}
+
+@Preview
+@Composable
+fun SideDishMenuPreview(){
+    SideDishMenuScreen(
+        options = DataSource.sideDishMenuItems,
+        onNextButtonClicked = {},
+        onCancelButtonClicked = {},
+        onSelectionChanged = {},
+        modifier = Modifier
+            .padding(dimensionResource(R.dimen.padding_medium))
+            .verticalScroll(rememberScrollState())
+    )
+}
+
+
+
+StartOrderScreen.kt
+
+package com.example.lunchtray.ui
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.lunchtray.R
+
+@Composable
+fun StartOrderScreen(
+    onStartOrderButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Button(
+            onClick = onStartOrderButtonClicked,
+            Modifier.widthIn(min = 250.dp)
+        ) {
+            Text(stringResource(R.string.start_order))
+        }
+    }
+}
+
+@Preview
+@Composable
+fun StartOrderPreview(){
+    StartOrderScreen(
+        onStartOrderButtonClicked = {},
+        modifier = Modifier
+            .padding(dimensionResource(R.dimen.padding_medium))
+            .fillMaxSize()
+    )
+}
